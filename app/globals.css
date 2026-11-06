@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/*
+ * Palette (from the brand reference): #F9F3ED cream · #E7D8CA sand · #AC9185 taupe · #531C22 burgundy · #220707 ink.
+ * A few derived tints keep text accessible and give depth: sand-light, paper, oxblood, wine.
+ * Taupe on cream is only 2.7:1, so taupe is for lines, icons and text on dark, never small text on light.
+ */
+@theme {
+  --color-ink: #220707;
+  --color-oxblood: #3a1015;
+  --color-burgundy: #531c22;
+  --color-wine: #7a2f38;
+  --color-taupe: #ac9185;
+  --color-sand: #e7d8ca;
+  --color-sand-light: #f1e6db;
+  --color-cream: #f9f3ed;
+  --color-paper: #fffbf7;
+  --color-charcoal: #2b1a1a;
+  --color-muted: #624e4c; /* 7.0:1 on cream, 5.5:1 on sand */
+  --color-stone: #ac9185; /* decorative only */
+  --color-line: #dccbbb;
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-display: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-ui: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-cream text-charcoal font-sans antialiased; font-size: 15px; line-height: 1.65; }
+  h1, h2, h3, h4 { @apply font-serif font-medium text-ink; letter-spacing: -0.01em; line-height: 1.08; }
+  a { text-underline-offset: 4px; }
+  :focus-visible { outline: 2px solid var(--color-wine); outline-offset: 3px; border-radius: 2px; }
+  .on-dark :focus-visible { outline-color: var(--color-sand); }
+  ::selection { background: var(--color-burgundy); color: var(--color-cream); }
+  button { cursor: pointer; touch-action: manipulation; }
+  a, button { -webkit-tap-highlight-color: transparent; }
+  button:disabled { cursor: not-allowed; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-12; }
+  .section-y { padding-block: clamp(3.5rem, 8vw, 7.5rem); }
+  .section-y-sm { padding-block: clamp(2.5rem, 5vw, 4rem); }
+
+  .h-hero { font-size: clamp(3rem, 7.6vw, 6.25rem); font-weight: 400; line-height: 0.98; letter-spacing: -0.02em; }
+  .h-page { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; }
+  .h-section { font-size: clamp(2.125rem, 4vw, 3.5rem); font-weight: 400; }
+  .statement { @apply font-display; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.25; letter-spacing: -0.005em; }
+  .lead { @apply text-muted; font-size: 1.0625rem; line-height: 1.7; max-width: 58ch; }
+
+  /* Thin tapered rule used under major headings. */
+  .rule { display: block; height: 1px; width: 72px; background: linear-gradient(90deg, var(--color-taupe), transparent); }
+
+  .btn { @apply relative isolate inline-flex items-center justify-center gap-2 overflow-hidden font-ui text-[12px] font-semibold uppercase transition-colors duration-300 rounded-[2px] border px-7 py-3.5 text-center; letter-spacing: 0.14em; min-height: 46px; }
+  /* Soft light sweep on hover for a polished, tactile feel. */
+  .btn::after { content: ""; position: absolute; inset: 0; z-index: -1; transform: translateX(-120%) skewX(-18deg); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent); transition: transform 0.7s ease; }
+  .btn:hover::after { transform: translateX(120%) skewX(-18deg); }
+  .btn-primary { @apply bg-burgundy border-burgundy text-cream hover:bg-ink hover:border-ink disabled:bg-stone disabled:border-stone; }
+  .btn-outline { @apply border-ink text-ink hover:bg-ink hover:text-cream; }
+  .btn-light { @apply bg-cream border-cream text-ink hover:bg-sand hover:border-sand; }
+  .btn-ghost-light { @apply border-cream/60 text-cream hover:bg-cream hover:text-ink; }
+  .btn-sm { @apply px-5 py-2.5 text-[11.5px]; min-height: 44px; }
+  .link-quiet { @apply text-ink underline decoration-taupe decoration-1 hover:decoration-2; }
+
+  .field { @apply w-full rounded-[2px] border border-stone bg-paper px-4 py-3 text-[15px] text-charcoal placeholder:text-muted/70; min-height: 46px; }
+  .field[aria-invalid="true"] { @apply border-[#9b2c2c]; }
+  .field:focus { outline: 2px solid var(--color-wine); outline-offset: 1px; }
+  .lift { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease; }
+  .lift:hover { transform: translateY(-4px); box-shadow: 0 22px 40px -26px rgba(34, 7, 7, 0.55); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+select.field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23531C22' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
